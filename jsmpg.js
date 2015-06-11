@@ -27,6 +27,7 @@ var requestAnimFrame = (function(){
 var jsmpeg = window.jsmpeg = function( url, opts ) {
 	opts = opts || {};
 	this.benchmark = !!opts.benchmark;
+	this.call = opts.callback;
 	this.canvas = opts.canvas || document.createElement('canvas');
 	this.autoplay = !!opts.autoplay;
 	this.loop = !!opts.loop;
@@ -478,6 +479,9 @@ jsmpeg.prototype.nextFrame = function() {
 			}
 			this.decodePicture();
 			this.benchDecodeTimes += this.now() - frameStart;
+                        if (this.call) {
+                                this.call(this.currentFrame);
+                        }
 			return this.canvas;
 		}
 		else if( code == BitReader.NOT_FOUND ) {
